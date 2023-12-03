@@ -5,7 +5,17 @@ const axios = require("axios");
 export const useTripStore = defineStore("tripStore", {
   state: () => ({
     destinations: [],
-    login: false,
+    searchResult: {
+      location: "",
+      checkInDate: "",
+      checkOutDate: "",
+      guests: Number,
+      rooms: Number,
+    },
+    token: "",
+    logoColor: "#2F80ED",
+    notificationsColor: "#828282",
+    notificationsStroke: "white",
   }),
 
   actions: {

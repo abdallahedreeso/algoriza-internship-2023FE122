@@ -21,9 +21,10 @@
     <!-- Login form -->
     <div class="form mt-24 mx-auto w-96">
       <h2 class="font-semibold text-center mb-10">Sign in</h2>
-      <form>
+      <form @submit.prevent="handleLogin()">
         <label class="text-sm font-medium" for="email">Email address</label>
         <input
+          v-model="email"
           type="email"
           id="email"
           class="w-full rounded bg-gray6 p-3 mb-5 focus:outline-none"
@@ -35,6 +36,7 @@
           class="password-container flex gap-2.5 p-3 w-full rounded bg-gray6 mb-5"
         >
           <input
+            v-model="password"
             :type="passwordType"
             id="password"
             class="w-full rounded bg-gray6 focus:outline-none"
@@ -64,11 +66,14 @@
 <script>
 import { useTripStore } from "../stores/TripsStore";
 import { ref } from "vue";
+import router from "@/router";
 
 export default {
   setup() {
     const tripStore = useTripStore();
     const passwordType = ref("password");
+    const email = ref("");
+    const password = ref("");
 
     // show and hide password
     const togglePassword = () => {
@@ -79,10 +84,34 @@ export default {
       }
     };
 
+    // handleLogin
+    const handleLogin = () => {
+      if (email.value && password.value) {
+        // const user = { email: email.value, password: password.value };
+
+        // Create a token
+        tripStore.token = "Done";
+
+        // Store token in localStorage
+        localStorage.setItem("token", tripStore.token);
+        console.log(tripStore.token);
+
+        // redirect to home or results page
+        if (localStorage.getItem("searchResult")) {
+          router.push("/searchResults");
+        } else {
+          router.push("/");
+        }
+      }
+    };
+
     return {
       togglePassword,
       tripStore,
       passwordType,
+      email,
+      password,
+      handleLogin,
     };
   },
 };
